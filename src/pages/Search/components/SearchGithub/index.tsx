@@ -48,6 +48,12 @@ const SearchGithub = () => {
             .then(userResponse => setUserData(userResponse));
     }
 
+    const handleGithub = () => {
+        //event.preventDefault();
+        fetch(`https://github.com/${search}`);
+            //.then(userResponse => setUserData(userResponse));
+    }
+
     return (
         <div className="container">
             <div className="searchgithub-content">
@@ -61,169 +67,65 @@ const SearchGithub = () => {
                                 value={search}
                                 name="search"
                                 type="text" 
-                                className="searchgithub-text"
+                                className="form-control mb-3"
                                 required
                                 onChange={handleOnChange}
                                 placeholder="Usuário Github"
                             />
-                            <br/>
-                            <span className="input-group-btn">
-                                <button type="submit" className='button' onClick={handleCreate}>
-                                    Encontrar
-                                </button>
-                            </span>
                         </div>
+                        <button type="submit" className="btn btn-primary" onClick={handleCreate}>
+                            Encontrar
+                        </button>
                     </div>
                 </form>
             </div>
             
             {isSearchResult && (
-                <div className="searchresult-content">
+                <div className="result-content">
                     
-                    <img
-                        src={userData.avatar_url}
-                        //className="img"
-                        alt=""
-                        height="300px"
-                    />
-                    <label className="data">
-                        Repositórios Publicos: {userData.public_repos}
-                    </label>
-                    <label className="data">
-                        Seguidores: {userData.followers}
-                    </label>
-                    <label className="data">
-                        Seguindo: {userData.following}
-                    </label>
-
-                    <input
-                        value={userData.company}
-                        name="company"
-                        type="text" 
-                        className="form-control mb-5"
-                        onChange={handleOnChange}
-                        placeholder="Nome do produto"
-                    />
-                    <input
-                        value={userData.blog}
-                        name="blog"
-                        type="text" 
-                        className="form-control mb-5"
-                        onChange={handleOnChange}
-                        placeholder="Nome do produto"
-                    />
-                    <input
-                        value={userData.location}
-                        name="location"
-                        type="text" 
-                        className="form-control mb-5"
-                        onChange={handleOnChange}
-                        placeholder="Nome do produto"
-                    />
-                    <input
-                        value={userData.created_at}
-                        name="created_at"
-                        type="text" 
-                        className="form-control mb-5"
-                        onChange={handleOnChange}
-                        placeholder="Nome do produto"
-                    />
-
-
                     <div className="row">
-                        <div className="col-md-4 vercoluna searchresult-data">
-                            
+                        <div className="col-4 mb-3">
+
                             <img
                                 src={userData.avatar_url}
-                                //className="img"
+                                className=""
                                 alt=""
                                 height="300px"
                             />
-                            
+
                         </div>
-                        <div className="col-6 vercoluna searchresult-data">
-                        <div className="col-3 vercoluna">
-                            <label className="data">
+                        <div className="col-8">
+                            <label className="result-data">
                                 Repositórios Publicos: {userData.public_repos}
                             </label>
-                        </div>
-                        <div className="col-2 vercoluna">
-                            <label className="data">
+                            <label className="result-data">
                                 Seguidores: {userData.followers}
                             </label>
-                        </div>
-                        <div className="col-2 vercoluna">
-                            <label className="data">
+                            <label className="result-data">
                                 Seguindo: {userData.following}
                             </label>
+                            <div className="result-data1">
+                                <h2 className="result-inf">
+                                    Informações
+                                </h2>
+                                <label className="form-control mb-2">
+                                    Empresa: {userData.company}
+                                </label>
+                                <label className="form-control mb-2">
+                                    Website/Blog: {userData.blog}
+                                </label>
+                                <label className="form-control mb-2">
+                                    Localidade: {userData.location}
+                                </label>
+                                <label className="form-control mb-2">
+                                    Menbro desde: {userData.created_at}
+                                </label>
+                            </div>
                         </div>
-                        </div>
-
-
-                        <div className="searchresult-data1">
-                                        <input
-                                            value={userData.public_repos}
-                                            name="public_repos"
-                                            type="text" 
-                                            className="form-control mb-5"
-                                            onChange={handleOnChange}
-                                            placeholder="Nome do produto"
-                                        />
-                                        <input
-                                            value={userData.followers}
-                                            name="followers"
-                                            type="text" 
-                                            className="form-control mb-5"
-                                            onChange={handleOnChange}
-                                            placeholder="Nome do produto"
-                                        />
-                                        <input
-                                            value={userData.following}
-                                            name="following"
-                                            type="text" 
-                                            className="form-control mb-5"
-                                            onChange={handleOnChange}
-                                            placeholder="Nome do produto"
-                                        />
-                        </div>
-
-
-                        <div className="searchresult-data2">
-                                    <input
-                                        value={userData.company}
-                                        name="company"
-                                        type="text" 
-                                        className="form-control mb-5"
-                                        onChange={handleOnChange}
-                                        placeholder="Nome do produto"
-                                    />
-                                    <input
-                                        value={userData.blog}
-                                        name="blog"
-                                        type="text" 
-                                        className="form-control mb-5"
-                                        onChange={handleOnChange}
-                                        placeholder="Nome do produto"
-                                    />
-                                    <input
-                                        value={userData.location}
-                                        name="location"
-                                        type="text" 
-                                        className="form-control mb-5"
-                                        onChange={handleOnChange}
-                                        placeholder="Nome do produto"
-                                    />
-                                    <input
-                                        value={userData.created_at}
-                                        name="created_at"
-                                        type="text" 
-                                        className="form-control mb-5"
-                                        onChange={handleOnChange}
-                                        placeholder="Nome do produto"
-                                    />
-                                </div>
-
                     </div>
+                    <button type="submit" className="btn btn-primary" onClick={handleGithub}>
+                        Encontrar
+                    </button>
                 </div>
             )}
         </div>

@@ -6,7 +6,7 @@ type Props = {
 }
 
 const Button = ({ text }: Props) => (
-        <button className='button'>
+        <button className="btn btn-primary">
             {text}
         </button>
 
