@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { Route, Switch, Link } from 'react-router-dom';
-import Button from '../../../../core/components/Button';
-import makeRequest from '../../../../core/utils/request';
-import SearchResult from '../SearchResult';
+import ImageLoader from '../Loaders/ImageLoader';
+import InfoLoader from '../Loaders/InfoLoader';
 import './style.scss';
 
 type FormState = {
@@ -24,6 +22,7 @@ const SearchGithub = () => {
         setSearch(event.target.value);
     }
 
+    const [isLoading, setIsLoading] = useState(false);
     const [isSearchResult, setIsSearchResult] = useState(false);
     const [search, setSearch] = useState('');
     const [userData, setUserData] = useState<FormState>({
@@ -43,21 +42,17 @@ const SearchGithub = () => {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setIsLoading(true);
         fetch(`https://api.github.com/users/${search}`)
             .then(response => response.json())
-            .then(userResponse => setUserData(userResponse));
-    }
-
-    const handleGithub = () => {
-        //event.preventDefault();
-        fetch(`https://github.com/${search}`);
-            //.then(userResponse => setUserData(userResponse));
+            .then(userResponse => setUserData(userResponse))
+            .finally(() => setIsLoading(false));
     }
 
     return (
         <div className="container">
-            <div className="searchgithub-content">
-                <h1 className="searchgithub-text-title">
+            <div className="search-content">
+                <h1 className="search-text-title">
                     Encontre um perfil Github
                 </h1>
                 <form onSubmit={handleSubmit}>
@@ -82,50 +77,57 @@ const SearchGithub = () => {
             
             {isSearchResult && (
                 <div className="result-content">
-                    
                     <div className="row">
                         <div className="col-4 mb-3">
-
-                            <img
-                                src={userData.avatar_url}
-                                className=""
-                                alt=""
-                                height="300px"
-                            />
-
+                            {isLoading ? <ImageLoader /> : (
+                            <>
+                                <img
+                                    src={userData.avatar_url}
+                                    //className="img"
+                                    alt=""
+                                    height="300px"
+                                />
+                                <a href={`https://github.com/${search}`} target="_blank" rel="noreferrer">
+                                    <button type="submit" className="btn btn-primary btn-github">
+                                        Encontrar
+                                    </button>
+                                </a>
+                            </>
+                            )}
                         </div>
                         <div className="col-8">
-                            <label className="result-data">
-                                Repositórios Publicos: {userData.public_repos}
-                            </label>
-                            <label className="result-data">
-                                Seguidores: {userData.followers}
-                            </label>
-                            <label className="result-data">
-                                Seguindo: {userData.following}
-                            </label>
-                            <div className="result-data1">
-                                <h2 className="result-inf">
-                                    Informações
-                                </h2>
-                                <label className="form-control mb-2">
-                                    Empresa: {userData.company}
-                                </label>
-                                <label className="form-control mb-2">
-                                    Website/Blog: {userData.blog}
-                                </label>
-                                <label className="form-control mb-2">
-                                    Localidade: {userData.location}
-                                </label>
-                                <label className="form-control mb-2">
-                                    Menbro desde: {userData.created_at}
-                                </label>
-                            </div>
+                            {isLoading ? <InfoLoader /> : (
+                                <>
+                                    <label className="result-data">
+                                        Repositórios Publicos: {userData.public_repos}
+                                    </label>
+                                    <label className="result-data">
+                                        Seguidores: {userData.followers}
+                                    </label>
+                                    <label className="result-data">
+                                        Seguindo: {userData.following}
+                                    </label>
+                                    <div className="result-data1">
+                                        <h2 className="result-inf">
+                                            Informações
+                                        </h2>
+                                        <label className="form-control mb-2">
+                                            Empresa: {userData.company}
+                                        </label>
+                                        <label className="form-control mb-2">
+                                            Website/Blog: {userData.blog}
+                                        </label>
+                                        <label className="form-control mb-2">
+                                            Localidade: {userData.location}
+                                        </label>
+                                        <label className="form-control mb-2">
+                                            Menbro desde: {userData.created_at}
+                                        </label>
+                                    </div>
+                                </>
+                            )}
                         </div>
                     </div>
-                    <button type="submit" className="btn btn-primary" onClick={handleGithub}>
-                        Encontrar
-                    </button>
                 </div>
             )}
         </div>
